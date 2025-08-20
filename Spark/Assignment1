@@ -1,0 +1,165 @@
+import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.functions.col
+
+object Assignment6_1 extends App {
+
+  val spark=SparkSession.builder().master("local").appName("Assignment6_1").getOrCreate()
+  val sc=spark.sparkContext
+  sc.setLogLevel("error")
+
+  val df=spark.read.option("header",true).option("inferschema",true).option("nullValue", "NULL").csv("C:\\Users\\Admin\\tdi_java_sessions\\spark_tdi1\\InputFiles\\students.csv")
+
+  df.printSchema()
+  df.show()
+
+//  //1. Select the first name and marks of students who have marks greater than 80.
+//  df.filter(col("marks")>80).select(col("first_name"),col("marks")).show()
+//
+//  //2. Select the first name and city of students who are from Pune.
+//  df.filter(col("city")==="Pune").select(col("first_name"),col("city")).show()
+//
+//  //3. Select the first name and age of students who are 21 years old.
+//  df.filter(col("age")>21).select(df("first_name"),df("age")).show()
+//
+//  //4. Select all columns of students who have marks less than 85.
+//  df.filter(df("marks")<85).show()
+//
+//  //5. Select the first name, last name, and marks of students who are not from Mumbai.
+//  df.filter(col("city")=!="Mumbai").select(col("first_name"),col("last_name"),col("marks")).show()
+//  df.filter(!col("city").isin("Mumbai")).select(col("first_name"),col("last_name"),col("marks")).show()
+//
+//  //6. Select the first name and age of students who are 22 or 23 years old
+//  df.filter(col("age")===22 || col("age")===23).select(col("first_name"),col("age")).show()
+//
+//  //7. Select the first name and marks of students who have marks between 80 and 90.
+//  df.filter(col("marks").between(80,90)).select(col("first_name"),col("marks")).show()
+//
+//  //8. Select the first name, last name, and city of students whose first name starts with ’S’
+//  df.filter(col("first_name").startsWith("S")).select(col("first_name"),col("last_name"),col("city")).show()
+//
+//  //9. Select the distinct cities from the students table.
+//  df.select(col("city")).distinct().show()
+//
+//  //10. Select the first name, last name, and age of students who are older than 20 and younger than 23.
+//  df.filter(col("age")>20 && col("age")<23).select(col("first_name"),col("last_name"),col("age")).show()
+//
+//  //11. Select the first name, last name, and city of students who are either from Mumbai or Pune.
+//  df.filter(col("city").isin("Mumbai","Pune")).select(col("first_name"),col("last_name"),col("city")).show()
+
+//  //12. Select the first name and marks of students who have marks equal to 85
+//  df.filter(col("marks")===85).select(col("first_name"),col("marks")).show()
+//
+//  //13. Select the first name, last name, and marks of students who have marks not equal to 85.
+//  df.filter(col("marks")=!=85).select(col("first_name"),col("last_name"),col("marks")).show()
+//
+//  //14. Select the first name and age of students who have age greater than or equal to 21.
+//  df.filter(col("age")>=21).select(col("first_name"),col("age")).show()
+//
+//  //15. Select the first name, last name, and marks of students who have marks less than or equal to 80.
+//  df.filter(col("marks")<=80).select(col("first_name"),col("last_name"),col("marks")).show()
+//
+//  //16. Select the first name, last name, and city of students whose last name is NULL.
+//  df.filter(col("last_name").isNull).select(col("first_name"),col("last_name"),col("city")).show()
+//
+//  //17. Select the first name and marks of students who have marks greater than 80 and less than 90.
+//  df.filter(col("marks")>80 && col("marks")<90).select(col("first_name"),col("marks")).show()
+//
+//  //18. Select the first name, last name, and age of students who are not older than 21.
+//  df.filter(col("age")<21).select(col("first_name"),col("last_name"),col("age")).show()
+
+//  //19. Select the first name, last name, and marks of students who have marks greater than or equal to 75 and less than or equal to 85.
+//  df.filter(col("marks")>=75 && col("marks")<=85).select("first_name","last_name","marks").show()
+//
+//  //20. Select the first name and marks of students who have marks not between 75 and 85.
+//  df.filter(col("marks").between(75,85)).select("first_name","marks").show()
+//
+//  //21. Select the first name and age of students who are either older than 22 or younger than 20.
+//  df.filter(col("age")>22 || col("age")<20).select(col("first_name"),col("age")).show()
+//
+//  //22. Select the first name, last name, and city of students whose first name contains ’a’.
+//  df.filter(col("first_name").like("%a%")).select(col("first_name"),col("last_name"),col("city")).show()
+//
+//  //23. Select the first name and marks of students who have marks in (76, 78, 80).
+//  df.filter(col("marks").isin(76,78,80)).select(col("first_name"),col("marks")).show()
+//
+//  //24. Select the first name and age of students who are not in the cities ’Mumbai’,’Pune’, ’Nagpur’.
+//  df.filter(!col("city").isin("Mumbai","Pune","Nagpur")).select(col("first_name"),col("age")).show()
+//
+//  //25. Select the first name, last name, and city of students whose city is ’Mumbai’ and marks are greater than 80.
+//  df.filter(col("city")==="Mumbai" && col("marks")>80).select(col("first_name"),col("last_name"),col("city")).show()
+//
+//  //26. Select the first name and marks of students who have marks greater than 80 or age less than 21.
+//  df.filter(col("marks")>80 || col("age")<21).select(col("first_name"),col("marks")).show()
+//
+//  //27. Select the first name, last name, and city of students whose city is not ’Nagpur’ and marks are not less than 80.
+//  df.filter(col("city")=!="Nagpur" && col("marks")<=80).select(col("first_name"),col("last_name"),col("city")).show()
+//
+//  //28. Select the first name and age of students who are either 20 years old or have marks greater than 85.
+//  df.filter(col("age")>20 || col("marks")>85).select(col("first_name"),col("age")).show()
+//
+//  //29. Select the first name, last name, and city of students whose city is not ’Mumbai’ and marks are between 75 and 90.
+//  df.filter(col("city")=!="Mumbai" && col("marks").between(75,90)).select(col("first_name"),col("last_name"),col("city")).show()
+//
+//  //30. Select the first name and marks of students who have marks either greater than 85 or less than 78.
+//  df.filter(col("marks")>85 || col("marks")<78).select(col("first_name"),col("marks")).show()
+
+//  //31. Select the first name, last name, and age of students whose last name is ’Patil’ and age is greater than or equal to 21.
+//  df.filter(col("last_name")==="Patil" && col("age")>=21).select(col("first_name"),col("last_name"),col("age")).show()
+//
+//  //32. Select the first name and marks of students who have marks not equal to 80 and city is ’Pune’.
+//  df.filter(col("marks")=!=80 && col("city")==="Pune").select(col("first_name"),col("marks")).show()
+//
+//  //33. Select the first name, last name, and city of students whose last name is not ’Patil’ and marks are greater than or equal to 85.
+//  df.filter(col("last_name")=!="Patil" && col("marks")>=85).select(col("first_name"),col("last_name"),col("city")).show()
+//
+//  //34. Select the first name and age of students who are either younger than 21 or from the city ’Nagpur’.
+//  df.filter(col("age")<21 || col("city")==="Nagpur").select(col("first_name"),col("age")).show()
+//
+//  //35. Select the first name, last name, and city of students whose city is either ’Mumbai’ or ’Nashik’ and marks are greater than 80.
+//  df.filter(col("city").isin("Mumbai","Nashik") && col("marks")>80).select(col("first_name"),col("last_name"),col("city")).show()
+//
+//  //36. Select the first name and marks of students who have marks greater than or equal to 85 and age less than 22.
+//  df.filter(col("marks")>=85 && col("age")<22).select(col("first_name"),col("marks")).show()
+//
+//  //37. Select the first name, last name, and city of students whose city is not ’Pune’ and marks are not less than 75.
+//  df.filter(col("city")=!="Pune" && col("marks")>75).select(col("first_name"),col("last_name"),col("city")).show()
+//
+//  //38. Select the first name and age of students who are either older than 20 and younger than 23 or from the city ’Mumbai’.
+//  df.filter(col("age")>20 && col("age")<23 || col("city")==="Mumbai").select(col("first_name"),col("age")).show()
+//
+//  //39. Select the first name, last name, and city of students whose city is ’Nashik’ and marks are not greater than 85.
+//  df.filter(col("city")==="Nashik" && col("marks")<85).select(col("first_name"),col("last_name"),col("city")).show()
+//
+//  //40. Select the first name and marks of students who have marks greater than 80 and age not equal to 21.
+//  df.filter(col("marks")>80 && col("age")=!=21).select(col("first_name"),col("marks")).show()
+//
+//  //41. Select the first name, last name, and city of students whose last name is not ’Patil’ and marks are not between 80 and 90.
+//  df.filter(col("last_name")=!="Patil" && !col("marks").between(80,90)).select(col("first_name"),col("last_name"),col("city")).show()
+//
+//  //42. Select the first name and age of students who are either older than 22 or marks are less than 80.
+//  df.filter(col("age")>22 || col("marks")<80).select(col("first_name"),col("age")).show()
+
+  //43. Select the first name, last name, and city of students whose city is ’Nagpur’ and marks are greater than 85.
+  df.filter(col("city")==="Nagpur" && col("marks")>85).select(col("first_name"),col("last_name"),col("city")).show()
+
+  //44. Select the first name and marks of students who have marks less than 75 or city is not ’Mumbai’.
+  df.filter(col("marks")<75 || col("city")=!="Mumbai").select(col("first_name"),col("marks")).show()
+
+  //45. Select the first name, last name, and age of students whose last name is ’Patil’ and age is greater than 20 and less than 23.
+  df.filter(col("last_name")==="Patil" && col("age")>20 && col("age")<23)
+
+  //46. Select the first name and marks of students who have marks not equal to 90 and city is ’Nashik’.
+  df.filter(col("marks")=!=90 && col("city")==="Nashik").select(col("first_name"),col("marks")).show()
+
+  //47. Select the first name, last name, and city of students whose city is ’Mumbai’ and marks are greater than 80 or less than 70.
+  df.filter(col("city")==="Mumbai" && col("marks")>80 || col("marks")<70).select(col("first_name"),col("last_name"),col("city")).show()
+
+  //48. Select the first name and age of students who are either 20 years old or have marks greater than or equal to 88.
+  df.filter(col("age")===20 || col("marks")>=88).select(col("first_name"),col("age")).show()
+
+  //49. Select the first name, last name, and city of students whose city is ’Nashik’ and marks are not between 80 and 85.
+  df.filter(col("city")==="Nashik" && !col("marks").between(80,85)).select(col("first_name"),col("last_name"),col("city")).show()
+
+  //50. Select the first name and marks of students who have marks less than 85 and age greater than 21.
+  df.filter(col("marks")<85 && col("age")>21).select(col("first_name"),col("marks")).show()
+}

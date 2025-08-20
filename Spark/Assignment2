@@ -1,0 +1,195 @@
+import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.functions.col
+
+object Assignment7 extends App {
+
+  val spark=SparkSession.builder().master("local").appName("Assignment7").getOrCreate()
+
+  val sc=spark.sparkContext
+  sc.setLogLevel("error")
+
+  val df=spark.read.option("header",true).option("inferschema",true).option("nullValue", "NULL").csv("C:\\Users\\Admin\\tdi_java_sessions\\spark_tdi1\\InputFiles\\employees.csv")
+
+  df.printSchema()
+  df.show()
+
+  // 1. Select the first name and salary of employees who have a salary greater than 60,000.
+  df.filter(col("salary")>60000).select(col("first_name"),col("salary")).show()
+
+  // 2. Select the first name and city of employees who are from Pune.
+  df.filter(col("city")==="Pune").select(col("first_name"),col("city")).show()
+
+  // 3. Select the first name and age of employees who are 30 years old.
+  df.filter(col("age")===30).select(col("first_name"),col("age")).show()
+
+  // 4. Select all columns of employees who have a salary less than 70,000.
+  df.filter(col("salary")<70000).show()
+
+  // 5. Select the first name, last name, and salary of employees who are not from Mumbai.
+  df.filter(col("city")=!="Mumbai").select(col("first_name"),col("last_name"),col("salary")).show()
+
+  // 6. Select the first name and age of employees who are 28 or 29 years old.
+  df.filter(col("age")===28 || col("age")===29).select(col("first_name"),col("age")).show()
+
+  // 7. Select the first name and salary of employees who have a salary between 60,000 and 70,000.
+  df.filter(col("salary").between(60000,70000)).select(col("first_name"),col("salary")).show()
+
+  // 8. Select the first name, last name, and city of employees whose first name starts with ’S’.
+  df.filter(col("first_name").startsWith("S")).select(col("first_name"),col("last_name"),col("city")).show()
+
+  // 9. Select the distinct departments from the employees table.
+  df.select(col("department")).distinct().show()
+
+  // 10. Select the first name, last name, and age of employees who are older than 28 and younger than 32.
+  df.filter(col("age")>28 && col("age")<32).select(col("first_name"),col("last_name"),col("age")).show()
+
+  // 11. Select the first name, last name, and city of employees who are either from Mumbai or Pune.
+  df.filter(col("city")==="Mumbai" || col("city")==="Pune").select(col("first_name"),col("last_name"),col("city")).show()
+
+  // 12. Select the first name and salary of employees who have a salary equal to 60,000.
+  df.filter(col("salary")===60000).select(col("first_name"),col("salary")).show()
+
+  // 13. Select the first name, last name, and salary of employees who have a salary not equal to 60,000.
+  df.filter(col("salary")=!=60000).select(col("first_name"),col("last_name"),col("salary")).show()
+
+  // 14. Select the first name and age of employees who have age greater than or equal to 30.
+  df.filter(col("age")>=30).select(col("first_name"),col("age")).show()
+
+  // 15. Select the first name, last name, and salary of employees who have a salary less than or equal to 60,000.
+  df.filter(col("salary")<=60000).select(col("first_name"),col("last_name"),col("salary")).show()
+
+  // 16. Select the first name, last name, and city of employees whose last name is NULL.
+  df.filter(col("last_name").isNull).select(col("first_name"),col("last_name"),col("city")).show()
+
+  // 17. Select the first name and salary of employees who have a salary greater than 60,000 and less than 70,000.
+  df.filter(col("salary")>60000 && col("salary")<70000).select(col("first_name"),col("salary")).show()
+
+  // 18. Select the first name, last name, and age of employees who are not older than 30.
+  df.filter(col("age")<=30).select(col("first_name"),col("last_name"),col("age")).show()
+
+  // 19. Select the first name, last name, and salary of employees who have a salary greater than or equal to 55,000 and less than or equal to 65,000.
+  df.filter(col("salary")>=55000 && col("salary")<=65000).select(col("first_name"),col("last_name"),col("salary")).show()
+
+  // 20. Select the first name and salary of employees who have a salary not between 55,000 and 65,000.
+  df.filter(!col("salary").between(55000,65000)).select(col("first_name"),col("salary")).show()
+
+  // 21. Select the first name and age of employees who are either older than 32 or younger than 26.
+  df.filter(col("age")>32 || col("age")<26).select(col("first_name"),col("age")).show()
+
+  // 22. Select the first name, last name, and city of employees whose first name contains ’a’.
+  df.filter(col("first_name").like("%a%")).select(col("first_name"),col("last_name"),col("city")).show()
+
+  // 23. Select the first name and salary of employees who have a salary in (60000, 70000, 80000).
+  df.filter(col("salary").isin(60000,70000,80000)).select(col("first_name"),col("salary")).show()
+
+  // 24. Select the first name, last name, and age of employees who are not in (28, 29, 30).
+  df.filter(!col("age").isin(28,29,30)).select(col("first_name"),col("last_name"),col("age")).show()
+
+  // 25. Select the first name and city of employees who are not from the city ’Nagpur’.
+  df.filter(col("city")=!="Nagpur").select(col("first_name"),col("city")).show()
+
+  // 26. Select the first name, last name, and age of employees who are younger than 30.
+  df.filter(col("age")<30).select(col("first_name"),col("last_name"),col("age")).show()
+
+  // 27. Select the first name, last name, and city of employees whose last name is ’Patil’.
+  df.filter(col("last_name")==="Patil").select(col("first_name"),col("last_name"),col("city")).show()
+
+  // 28. Select the first name and age of employees who are either 27 years old or have a salary greater than 65,000.
+  df.filter(col("age")===27 || col("salary")>65000).select(col("first_name"),col("age")).show()
+
+  // 29. Select the first name, last name, and city of employees whose city is not ’Mumbai’ and salary is between 55,000 and 70,000.
+  df.filter(col("city")=!="Mumbai" && col("salary").between(55000,70000)).select(col("first_name"),col("last_name"),col("city")).show()
+
+  // 30. Select the first name and salary of employees who have a salary either greater than 75,000 or less than 60,000.
+  df.filter(col("salary")>75000 || col("salary")<60000).select(col("first_name"),col("salary")).show()
+
+  // 31. Select the first name, last name, and age of employees whose last name is ’Patil’ and age is greater than or equal to 30.
+  df.filter(col("last_name")==="Patil" && col("age")>=30).select(col("first_name"),col("last_name"),col("age")).show()
+
+  // 32. Select the first name and salary of employees who have a salary not equal to 60,000 and city is ’Pune’.
+  df.filter(col("salary")=!=60000 && col("city")==="Pune").select(col("first_name"),col("salary")).show()
+
+  // 33. Select the first name, last name, and city of employees whose last name is not ’Patil’ and salary is greater than or equal to 70,000.
+  df.filter(col("last_name")=!="Patil" && col("salary")>=70000).select(col("first_name"),col("last_name"),col("city")).show()
+
+  // 34. Select the first name and age of employees who are either younger than 30 or from the city ’Nagpur’.
+  df.filter(col("age")<30 || col("city")==="Nagpur").select(col("first_name"),col("age")).show()
+
+  // 35. Select the first name, last name, and city of employees whose city is either ’Mumbai’ or ’Nashik’ and salary is greater than 70,000.
+  df.filter(col("city")==="Mumbai" || col("city")==="Nashik" && col("salary")>70000).select(col("first_name"),col("last_name"),col("city")).show()
+
+  // 36. Select the first name and salary of employees who have a salary greater than or equal to 65,000 and age less than 30.
+  df.filter(col("salary")>=65000 && col("age")<30).select(col("first_name"),col("salary")).show()
+
+  // 37. Select the first name, last name, and city of employees whose city is not ’Pune’ and salary is not less than 60,000.
+  df.filter(col("city")=!="Pune" && col("salary")>60000).select(col("first_name"),col("last_name"),col("city")).show()
+
+  // 38. Select the first name and age of employees who are either older than 28 and younger than 32 or from the city ’Mumbai’.
+  df.filter(col("age")>28 && col("age")<32 || col("city")==="Mumbai").select(col("first_name"),col("age")).show()
+
+  // 39. Select the first name, last name, and city of employees whose city is ’Nashik’ and salary is not greater than 65,000.
+  df.filter(col("city")==="Nashik" && col("salary")<65000).select(col("first_name"),col("last_name"),col("city")).show()
+
+  // 40. Select the first name and salary of employees who have a salary greater than 60,000 and age not equal to 30.
+  df.filter(col("salary")>60000 && col("age")=!=30).select(col("first_name"),col("salary")).show()
+
+  // 41. Select the first name, last name, and city of employees whose last name is not ’Patil’ and salary is not between 60,000 and 70,000.
+  df.filter(col("last_name")=!="Patil" && !col("salary").between(60000,70000)).select(col("first_name"),col("last_name"),col("city")).show()
+
+  // 42. Select the first name and age of employees who are either older than 32 or salary is less than 70,000.
+  df.filter(col("age")>32 || col("salary")<70000).select(col("first_name"),col("age")).show()
+
+  // 43. Select the first name, last name, and city of employees whose city is ’Nagpur’ and salary is greater than 70,000.
+  df.filter(col("city")==="Nagpur" && col("salary")>70000).select(col("first_name"),col("last_name"),col("city")).show()
+
+  // 44. Select the first name and salary of employees who have a salary less than 60,000 or city is not ’Mumbai’.
+  df.filter(col("salary")<60000 || col("city")=!="Mumbai").select(col("first_name"),col("salary")).show()
+
+  // 45. Select the first name, last name, and age of employees whose last name is ’Patil’ and age is greater than 28 and less than 32.
+  df.filter(col("last_name")==="Patil" && col("age")>28 && col("age")<32).select(col("first_name"),col("last_name"),col("age")).show()
+
+  // 46. Select the first name and salary of employees who have a salary not equal to 70,000 and city is ’Nashik’.
+  df.filter(col("salary")=!=70000 && col("city")==="Nashik").select(col("first_name"),col("salary")).show()
+
+  // 47. Select the first name, last name, and city of employees whose city is ’Mumbai’ and salary is greater than 60,000 or less than 50,000.
+  df.filter(col("city")==="Mumbai" && col("salary")>60000 || col("salary")<50000).select(col("first_name"),col("last_name"),col("city")).show()
+
+  // 48. Select the first name and age of employees who are either 30 years old or have a salary greater than or equal to 75,000.
+  df.filter(col("age")===30 || col("salary")>=75000).select(col("first_name"),col("age")).show()
+
+  // 49. Select the first name, last name, and city of employees whose city is ’Nashik’ and salary is not between 60,000 and 70,000.
+  df.filter(col("city")==="Nashik" && !col("salary").between(60000,70000)).select(col("first_name"),col("last_name"),col("city")).show()
+
+  // 50. Select the first name and salary of employees who have a salary less than 65,000 and age greater than 28.
+  df.filter(col("salary")<65000 && col("age")>28).select(col("first_name"),col("salary")).show()
+
+  // 51. Select the first name, last name, and city of employees whose first name starts with ’A’.
+  df.filter(col("first_name").startsWith("A")).select("first_name","last_name","city").show()
+
+  // 52. Select the first name, last name, and city of employees whose first name ends with ’a’.
+  df.filter(col("first_name").endsWith("a")).select("first_name","last_name","city").show()
+
+  // 53. Select the first name, last name, and city of employees whose first name contains ’raj’.
+  df.filter(col("first_name").contains("raj")).select("first_name","last_name","city").show()
+
+  // 54. Select the first name, last name, and city of employees whose last name starts with ’K’.
+  df.filter(col("last_name").startsWith("K")).select("first_name","last_name","city").show()
+
+  // 55. Select the first name, last name, and city of employees whose last name ends with ’e’.
+  df.filter(col("last_name").endsWith("e")).select("first_name","last_name","city").show()
+
+  // 56. Select the first name, last name, and city of employees whose city contains ’sh’.
+  df.filter(col("city").contains("sh")).select("first_name","last_name","city").show()
+
+  // 57. Select the first name, last name, and city of employees whose first name starts with any character followed by ’n’.
+  df.filter(col("first_name").like("_n%")).select(col("first_name"), col("last_name"), col("city")).show()
+
+  // 58. Select the first name, last name, and city of employees whose last name contains two consecutive ’a’s.
+  df.filter(col("last_name").like("%aa%")).select(col("first_name"), col("last_name"), col("city")).show()
+
+  // 59. Select the first name, last name, and city of employees whose city ends with ’pur’.
+  df.filter(col("city").endsWith("pur")).select(col("first_name"), col("last_name"), col("city")).show()
+
+  // 60. Select the first name, last name, and city of employees whose first name is exactly 5 characters long.
+  df.filter(col("first_name").like("_")).select(col("first_name"), col("last_name"), col("city")).show()
+}
